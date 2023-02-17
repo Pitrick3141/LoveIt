@@ -198,6 +198,9 @@ other = "Sensitive Content Alert"
 [ReadCaution]
 other = "This text may contain sensitive content, please read with caution"
 
+[HoverRead]
+other = "↑↑↑Hover your mouse above to show hidden content↑↑↑"
+
 # === shortcodes/spoiler.html ===
 
 # === shortcodes/locked.html ===
@@ -207,6 +210,12 @@ other = "Protected Content"
 
 [AuthRequired]
 other = "This post is protected by authentication system, please view after verification"
+
+[UnlockedContent]
+other = "Unlocked Content"
+
+[AuthPassed]
+other = "Authorized successfully, the content is now unlocked"
 
 # === shortcodes/spoiler.html ===
 
