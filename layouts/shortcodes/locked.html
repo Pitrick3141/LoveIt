@@ -1,17 +1,32 @@
 <div id="elem1" class="details admonition lock open">
-  <div id="elem2" class="details-summary admonition-title">
+  <div class="details-summary admonition-title">
       <i class="icon fas fa-lock fa-fw" aria-hidden="true"></i>{{T "LockedContent"}}<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
   </div>
   <div class="details-content">
-      <div id="elem3" class="admonition-content">
+      <div class="admonition-content">
           {{T "AuthRequired"}}
       </div>
   </div>
 </div>
 
+<div id="elem2" class="details admonition unlock open" style="display:none">
+  <div class="details-summary admonition-title">
+    <i class='icon fas fa-lock-open fa-fw' aria-hidden='true'></i>{{T "UnlockedContent"}}<i class='details-icon fas fa-angle-right fa-fw' aria-hidden='true'></i>
+  </div>
+  <div class="details-content">
+      <div class="admonition-content">
+        {{T "AuthPassed"}}
+      </div>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+$("head").append("\<meta name='referrer' content='no-referrer-when-downgrade'\>");
 verifyAuth();
+document.querySelector("[name='referrer']").remove()
+$("head").append("\<meta name='referrer' content='strict-origin-when-cross-origin'\>");
 
 function encodeUTF8(s) {
         var i, r = [], c, x;
@@ -19,7 +34,7 @@ function encodeUTF8(s) {
             if ((c = s.charCodeAt(i)) < 0x80) r.push(c);
             else if (c < 0x800) r.push(0xC0 + (c >> 6 & 0x1F), 0x80 + (c & 0x3F));
             else {
-                if ((x = c ^ 0xD800) >> 10 == 0) //对四字节UTF-16转换为Unicode
+                if ((x = c ^ 0xD800) >> 10 == 0)
                     c = (x << 10) + (s.charCodeAt(++i) ^ 0xDC00) + 0x10000,
                         r.push(0xF0 + (c >> 18 & 0x7), 0x80 + (c >> 12 & 0x3F));
                 else r.push(0xE0 + (c >> 12 & 0xF));
@@ -71,7 +86,6 @@ function verifyAuth(){
       return;
     }
   var url = window.location.href;
-  var lang = "en";
   if(url.includes("zh-cn")){
     lang = "zh";
   }
@@ -80,12 +94,11 @@ function verifyAuth(){
   var input_Pass = window.prompt("[PitrickAuth]文章受到验证系统保护，请输入验证令牌","");
   var authen_Time = new Date().getTime();
   if(input_Pass != "" && input_Pass != null){
-    // Using the core $.ajax() method
     var authen_Pass = sha1(input_Pass);
     $.ajax({      
-      url: "https://api.pitrick.link/auth",// The URL for the request
-      data: {authId: authen_ID, authPass: authen_Pass, authTime: authen_Time, lang: lang},// The data to send (will be converted to a query string)
-      type: "GET",// Whether this is a POST or GET request
+      url: "https://api.pitrick.link/auth",
+      data: {authId: authen_ID, authPass: authen_Pass, authTime: authen_Time},
+      type: "GET",
       }).done(function(res){
         console.log(JSON.stringify(res));
         alert("[PitrickAuth]\n" + res.authResult + "\n" + res.authMessage);
@@ -108,10 +121,9 @@ function verifyAuth(){
 
 function changeAdmon() {
   var elem1 = document.getElementById('elem1');
-  elem1.className = "details admonition unlock open";
   var elem2 = document.getElementById('elem2');
-  elem2.innerHTML = "<i class='icon fas fa-lock-open fa-fw' aria-hidden='true'></i>" + {{T "UnlockedContent"}} + "<i class='details-icon fas fa-angle-right fa-fw' aria-hidden='true'></i>"
-  var elem3 = document.getElementById('elem3');
-  elem3.innerHTML = {{T "AuthPassed"}}
+  elem1.style.display = 'none';
+  elem2.style.display = 'block';
 }
+
 </script>
