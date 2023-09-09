@@ -1,0 +1,17 @@
+<span class="censor" title={{ .Get 0 | default ""}}>
+{{.Inner}}
+</span>
+
+<style>
+    .censor, .censor a, a .censor, .censor a.new {
+        background-color: black;
+        color: black;
+        text-shadow: none;
+    }
+    .censor:hover, .censor:active, .censor:hover .censor, .censor:active .censor {
+        color: white !important;
+    }
+    .censor:hover a, a:hover .censor, .censor:active a, a:active .censor {
+        color: lightblue !important;
+    }
+</style>
